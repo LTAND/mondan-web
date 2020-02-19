@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 
 import './plugins/BaaS.js'
+import './plugins/element.js'
 
 Vue.config.productionTip = false
 

@@ -18,7 +18,6 @@ export default {
     // 初始化 BaaS 对象
     this.$BaaS.init(config.clientID);
     // this.anonymousLogin()
-
     Product.findProductList(data => {
       this.productList = data
     });
