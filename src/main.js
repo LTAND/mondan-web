@@ -2,8 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
-import './plugins/BaaS.js'
-import './plugins/element.js'
+import "./assets/css/rest.css"  // css格式化
+
+import './plugins/BaaS.js'     // 知晓云sdk
+import './plugins/element.js'  // 饿了么
 
 Vue.config.productionTip = false
 
