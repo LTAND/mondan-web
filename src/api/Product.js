@@ -1,5 +1,7 @@
 import BaaS from 'minapp-sdk';
 import { showHErrorMsg } from "../utils/util"; // 根据错误码返回信息
+import {config} from "../utils/config"
+BaaS.init(config.clientID);
 
 let ProductTable = new BaaS.TableObject('product')
 
@@ -11,6 +13,15 @@ function addProductRecord(callback) {
     name:"MODAN家庭矿机 基础版",
     description: "MODAN是一款可以挖FIL的智能路由器。通过远程集群部署，MODAN家庭矿机可接入MODOPOOL矿池，完成Filecoin的文件存储与封装，并向主节点提交证明，从而获得奖励。MODAN采用服务器级的主板及CPU，64GB DDR3内存及8TB的企业级存储盘，完全满足Filecoin的挖矿标准，是目前市面上唯一的家庭FIL矿机。",
     status: "0",
+    images:[
+      "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/07da91be-c9a8-429f-81d0-c6d75832a8b9_240.png",
+      "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/e3c67f98-9012-4506-8320-f4b3ea3c794c_240.png",
+      "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/b78fd4ce-dfc9-4ed1-8542-adf2d5be5a9b_240.png",
+      "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/ed6310bd-8f1c-4692-a86b-454c042e1d59_240.png",
+      "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/c97a9744-0cc2-40a1-8ce2-fbb040111668_240.png",
+      "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/a8a56c17-1309-4e7b-81cb-571b2b64bdd1_240.png",
+      "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/bf373507-5e1e-4e0d-980a-684eb43703ab_240.png"
+    ],
     now_price: 6000,
     orginal_price: 10000,
     limited_count: 1000,

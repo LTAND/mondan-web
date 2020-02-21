@@ -1,12 +1,32 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link tag="a" to="/">home</router-link><br>
-      <router-link tag="a" to="/test">test</router-link><br>
-    </nav>
-    <router-view/>
+    <el-container>
+      <el-header>
+        <Header></Header>
+      </el-header>
+      <el-main>
+        <router-view />
+      </el-main>
+      <el-footer>Footer</el-footer>
+    </el-container>
   </div>
 </template>
+<script>
+import Header from "./components/Header.vue"
 
-<style lang="scss">
+export default {
+  components:{
+    Header,
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+#app{
+  width: 1220px;
+  margin: auto;
+  el-container{
+    width: 100%;
+  }
+}
 </style>

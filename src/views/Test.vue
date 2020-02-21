@@ -1,6 +1,6 @@
 <template>
   <div class="test">
-    <h1>test router</h1>
+    <h1>test page</h1>
   </div>
 </template>
 
@@ -17,8 +17,6 @@ export default {
     };
   },
   created() {
-    // 初始化 BaaS 对象
-    this.$BaaS.init(config.clientID);
     
     Product.findProductList(data => {
       this.productList = data

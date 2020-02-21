@@ -1,0 +1,45 @@
+html, body, #app {
+  width: 100%;
+  height: 100%;
+}
+
+img{
+  width: 100%;
+  height: 100%;
+}
+
+/* 清除浮动 */
+.clearfix:after{
+  content: "."; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+}
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+}
+
+.deal::-webkit-inner-spin-button,.deal::-webkit-outer-spin-button{
+  -webkit-appearance: none;
+}
+
+.bt-primary{
+  background-color: #3581ff;
+  color: #fff;
+}
+.bt-primary:hover {
+  background-color: #68a1ff;
+}
+.bt-driving{
+  background-color: #f90;
+  color: #fff;
+}
+.bt-driving:hover {
+  background-color: #ffad33;
+}
+.text-primary {
+  color: #3581ff;
+}
