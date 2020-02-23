@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Product from "../api/Product.js"
+import ProductApi from "../api/Product.js"
 import { config } from "../utils/config.js"; // 配置密钥
 
 export default {
@@ -21,7 +21,7 @@ export default {
   created(){
     this.$BaaS.init(config.clientID);
 
-    Product.findProductList(data => {
+    ProductApi.findProductList(data => {
       this.productList = data
       console.log(data)
     });
