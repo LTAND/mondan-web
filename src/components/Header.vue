@@ -1,5 +1,6 @@
 <template>
   <div class="header">
+<<<<<<< HEAD
     <el-row class="nav" type="flex" justify="space-between">
       <!-- logo -->
       <div class="logo">
@@ -37,11 +38,28 @@
         <div v-else class="login-link">登录/注册</div>
       </div>
     </el-row>
+=======
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu-demo"
+      mode="horizontal"
+      router
+      @select="handleSelect"
+    >
+      <el-menu-item
+        v-for="(item, index) in navList"
+        :index="item.path"
+        :route="item.path"
+        :key="index"
+      >{{item.text}}</el-menu-item>
+    </el-menu>
+>>>>>>> 5538dbc810430aa749baf77feb460cb496df475d
   </div>
 </template>
 
 <script>
 export default {
+<<<<<<< HEAD
   // mounted(){
   //   console.log(this.$store.state)
   // },
@@ -65,10 +83,26 @@ export default {
         { path: "/", text: "更多" }
       ]
     };
+=======
+  data() {
+    return {
+      activeIndex: "/home",
+      navList: [
+        { path: "/home", text: "主页" },
+        { path: "/test", text: "测试" }
+      ]
+    };
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    }
+>>>>>>> 5538dbc810430aa749baf77feb460cb496df475d
   }
 };
 </script>
 
+<<<<<<< HEAD
 <style lang="scss" scoped>
 //超链接
 a {
@@ -133,3 +167,7 @@ a {
   }
 }
 </style>
+=======
+<style>
+</style>
+>>>>>>> 5538dbc810430aa749baf77feb460cb496df475d

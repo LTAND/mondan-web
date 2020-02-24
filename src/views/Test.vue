@@ -1,5 +1,7 @@
 <template>
-  <div class="test">12312312311</div>
+  <div class="test">
+    <h1>test page</h1>
+  </div>
 </template>
 
 <script>
@@ -15,10 +17,7 @@ export default {
     };
   },
   created() {
-    // 初始化 BaaS 对象
-    this.$BaaS.init(config.clientID);
-    // this.anonymousLogin()
-
+    
     Product.findProductList(data => {
       this.productList = data
     });
@@ -37,7 +36,7 @@ export default {
         })
         .catch(err => {
           // HError
-          // showHErrorMsg(err);
+          showHErrorMsg(err);
         });
     },
 
@@ -50,27 +49,8 @@ export default {
         })
         .catch(err => {
           // HError
-          console.log("err: ", err);
+         showHErrorMsg(err);
         });
-    },
-    async query() {
-      try {
-        let query = new this.$BaaS.Query();
-        console.log("query: ", query);
-
-        // // 应用查询对象
-        // let res = await BookModel.setQuery(query).find()
-        // // success
-        // return res
-
-        // 不设置查询条件
-        let res = BookModel.find();
-        // success
-        return res;
-      } catch (err) {
-        // error
-        throw err;
-      }
     }
   }
 };
