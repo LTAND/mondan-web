@@ -1,6 +1,7 @@
 <template>
   <div class="test">
     <h1>test page</h1>
+    <product-list></product-list>
   </div>
 </template>
 
@@ -8,6 +9,7 @@
 import { showHErrorMsg } from "../utils/util.js"; // 根据错误码返回信息
 import { config } from "../utils/config.js"; // 配置密钥
 import Product from "../api/Product";
+import ProductList from "../components/Product-list"
 
 export default {
   data() {
@@ -15,6 +17,9 @@ export default {
       user: null,
       productList:[]
     };
+  },
+  components:{
+    ProductList,
   },
   created() {
     

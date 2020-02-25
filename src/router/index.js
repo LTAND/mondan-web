@@ -3,18 +3,18 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home'
 import Login from '../views/Login'
 import Test from "../views/Test"
+import Cart from "../views/Cart"
 import ProductDetail from "../views/Product-detail.vue"
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: "/",
-    component: Home
+    redirect:"/home"
   },
   {
     path:"/login",
     component:Login
-    // redirect:"/home"
   },
   {
     name:"home",
@@ -25,6 +25,11 @@ const routes = [
     name:"product-detail",
     path:"/product-detail/:id",
     component:ProductDetail
+  },
+  {
+    name: "cart",
+    path: "/cart",
+    component: Cart
   },
   {
     name:"test",

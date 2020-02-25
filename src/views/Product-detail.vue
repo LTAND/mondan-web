@@ -32,6 +32,10 @@
               <i class="iconfont iconbanben"></i>
               <span>版本：{{version}}</span>
             </p>
+            <p>
+              <i class="iconfont iconbanben"></i>
+              <span>注意：每个用户限购{{this.product.limited_count}}台</span>
+            </p>
           </div>
         </div>
         <div class="price-value clearfix">
@@ -40,14 +44,14 @@
             <button ref="btn-cut" disabled @click="cutCount()">
               <i class="iconfont iconminus"></i>
             </button>
-            <input class="deal" type="number" v-model="count" />
+            <input class="deal" type="number" @blur="checkCount()" v-model.number="product.count" />
             <button ref="btn-add" @click="addCount()">
               <i class="iconfont iconadd"></i>
             </button>
           </div>
         </div>
         <div class="action">
-          <button class="bt-button bt-primary">加入购物车</button>
+          <button @click="addCart()" class="bt-button bt-primary">加入购物车</button>
           <button class="bt-button bt-driving">立即购买</button>
         </div>
       </div>
@@ -66,13 +70,13 @@
 <script>
 import ProductApi from "../api/Product.js";
 import { config } from "../utils/config"
+import {cartStorage} from "../utils/cache.js"
 
 export default {
   data() {
     return {
       product: {},
       images: [],         // 轮播小图
-      count: 1,           // 商品数量
       version:"",         // 商品版本
       avatar_url: "https://file.bitmain.com/shop-image-storage/product/2019/10/09/16/07da91be-c9a8-429f-81d0-c6d75832a8b9_240.png",
       tabActiveIndex: 0,  // tab当前激活下表
@@ -96,8 +100,10 @@ export default {
     _getProduct(){
       // 传递商品id给知晓云接口
       ProductApi.getProductItem(this.$route.params.id, data => {
+        //  商品初始化
         this.product = data;
-        this.version = data.param["name"]
+        this.$set(this.product,'count',1)
+        this.version = data.param["name"]  
         this.tabs[1].pane = data.param["detail"]
 
         // 格式化轮播数据
@@ -111,22 +117,29 @@ export default {
         });
       });
     },
+    checkCount(){
+      if(this.product.count > this.product.limited_count || this.product.count<=0){
+        this.product.count = 1
+      }
+    },
     addCount() {
       // 增加数量
-      if (this.count == this.product.limited_count) {
+      if (this.product.count == this.product.limited_count) {
+        console.log('this.product.count: ', this.product.count);
         alert(`每个用户限购${this.product.limited_count}台`);
         return;
       }
+      console.log('this.product.count: ', this.product.count);
       this.$refs["btn-cut"].removeAttribute("disabled")
-      this.count++;
+      this.product.count++;
     },
     cutCount(){
       // 减少数量
-      if(this.count == 1){
+      if(this.product.count == 1){
         this.$refs["btn-cut"].setAttribute("disabled",true)
         return
       }
-      this.count--
+      this.product.count--
     },
     showAvatarImage(index) {
       // 大图 与 轮播图
@@ -138,6 +151,30 @@ export default {
     },
     handleTab(index){
       this.tabActiveIndex = index
+    },
+    addCart() {
+      // 加入购物车
+      let list = cartStorage.getCache() 
+      let index = list.findIndex(p => { return p.id == this.product.id })
+
+      if (list.length && list[index]) {
+        let maxCount = this.product.count + list[index].count
+        // 添加数量达到限购
+        if( maxCount > list[index].limited_count ){
+          alert(`该商品在购物车已存在${list[index].count}台`);
+          return
+        }else{
+          console.log('maxCount: ', maxCount);
+          list[index].count = maxCount
+          cartStorage.setCache(list)
+          alert("商品的数量增加",list[index].count)
+          return
+        }
+      } else {
+        list.push(this.product)
+        cartStorage.setCache(list)
+        alert("添加到购物车里")
+      }
     }
   }
 };
