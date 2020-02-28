@@ -10,11 +10,11 @@
       <!-- 导航 -->
       <el-row type="flex" class="nav-item">
         <router-link
+          :default-active="activeIndex"
           v-for="(item, index) in navList"
           :index="item.path"
           :to="item.path"
           :key="index"
-          @click="handleSelect"
         >{{item.text}}</router-link>
       </el-row>
       <!-- 登录/注册 -->
@@ -81,10 +81,10 @@ export default {
     return {
       activeIndex: "/",
       navList: [
-        { path: "/", text: "首页" },
-        { path: "/", text: "关于" },
-        { path: "/", text: "其他" },
-        { path: "/", text: "更多" }
+        { path: "/home", text: "首页" },
+        { path: "/test", text: "商品" },
+        { path: "/cart", text: "购物车"},
+        { path: "/about", text: "关于" }
       ]
     };
   }

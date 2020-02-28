@@ -7,6 +7,7 @@ const store = new Vuex.Store({
   state: {
     isLogin:false,
     userInfo:null,
+    token:"",
   },
   mutations: {
     // 设置用户状态数据
@@ -19,6 +20,7 @@ const store = new Vuex.Store({
         localStorage.clear()
         state.userInfo = null;
         state.isLogin = false;
+        state.token = "";
       }
     }
   },
