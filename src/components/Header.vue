@@ -1,6 +1,5 @@
 <template>
   <div class="header">
-<<<<<<< HEAD
     <el-row class="nav" type="flex" justify="space-between">
       <!-- logo -->
       <div class="logo">
@@ -20,53 +19,58 @@
       </el-row>
       <!-- 登录/注册 -->
       <div class="login">
-        <div v-if="true">
+        <div v-if="isLogin">
           <el-dropdown>
             <span class="el-dropdown-link">
               <img src="../assets/img/logo.png" />
-              用户名
-              <i class="el-icon-arrow-down el-icon--right"></i>
+              <img src="" alt="">
+              <!-- {{this.$store.store.state.userInfo._username}} -->
+              {{JSON.parse(this.$store.store.state.userInfo)._username}}
+              
+              <i
+                class="el-icon-arrow-down el-icon--right"
+              ></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>个人信息</el-dropdown-item>
               <el-dropdown-item divided>
-                <div @click="handleClick">退出登录</div>
+                <div @click="handleExit">退出登录</div>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-        <div v-else class="login-link">登录/注册</div>
+        <div v-else class="login-link">
+          <router-link to="/login">登录 / 注册</router-link>
+        </div>
       </div>
     </el-row>
-=======
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      router
-      @select="handleSelect"
-    >
-      <el-menu-item
-        v-for="(item, index) in navList"
-        :index="item.path"
-        :route="item.path"
-        :key="index"
-      >{{item.text}}</el-menu-item>
-    </el-menu>
->>>>>>> 5538dbc810430aa749baf77feb460cb496df475d
   </div>
 </template>
 
 <script>
 export default {
-<<<<<<< HEAD
   // mounted(){
   //   console.log(this.$store.state)
   // },
-
+  computed:{
+    isLogin(){
+      if(localStorage.getItem("user")&&localStorage.getItem("ifx_baas_uid")){
+        this.$store.store.commit("setUserState", JSON.stringify(localStorage.getItem("user")))
+      }
+      else{
+        this.$store.store.commit("setUserState",null);
+      }
+      return this.$store.store.getters.isLogin;
+    }
+  },
   methods: {
-    handleClick() {
-      alert(123);
+    handleExit() {
+      // localStorage.removeItem("user");
+      localStorage.clear();
+      // this.$router.push("/");
+      this.$store.store.dispatch("setUser",null);
+      this.$message.success("退出成功");
+      console.log(this.$store.store.state)
     },
     handleSelect(key, keyPath) {
       console.log(key);
@@ -83,26 +87,10 @@ export default {
         { path: "/", text: "更多" }
       ]
     };
-=======
-  data() {
-    return {
-      activeIndex: "/home",
-      navList: [
-        { path: "/home", text: "主页" },
-        { path: "/test", text: "测试" }
-      ]
-    };
-  },
-  methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    }
->>>>>>> 5538dbc810430aa749baf77feb460cb496df475d
   }
 };
 </script>
 
-<<<<<<< HEAD
 <style lang="scss" scoped>
 //超链接
 a {
@@ -113,7 +101,7 @@ a {
     color: black;
   }
   &:active {
-    color: white;
+    color: skyblue;
   }
 }
 
@@ -121,7 +109,7 @@ a {
   height: 80px;
   line-height: 80px;
   border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 2px #eee;
+  // box-shadow: 0 2px 2px #eee;
   //导航栏
   .nav {
     height: 80px;
@@ -167,7 +155,3 @@ a {
   }
 }
 </style>
-=======
-<style>
-</style>
->>>>>>> 5538dbc810430aa749baf77feb460cb496df475d

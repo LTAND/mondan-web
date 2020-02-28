@@ -36,6 +36,7 @@ export default {
 
 <style lang="scss">
 .slider {
+  width:100%;
   height: 425px;
   .el-carousel {
     overflow: hidden;

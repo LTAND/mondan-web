@@ -13,6 +13,12 @@ import Footer from "@/components/Footer.vue";
 import LoginTab from "@/components/LoginTab.vue"
 import Header from "@/components/Header.vue";
 export default {
+  beforeRouteEnter:(to,from,next)=>{
+    //组件内守卫
+    next(vm =>{
+      vm.$store.store.dispatch("setUser",null);
+    })
+  },
   name: "app",
   // 3. 在components中声明组件
   components: {

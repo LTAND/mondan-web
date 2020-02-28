@@ -16,11 +16,11 @@ const routes = [
     component:Login
     // redirect:"/home"
   },
-  {
-    name:"home",
-    path: "/home",
-    component: Home,
-  },
+  // {
+  //   name:"home",
+  //   path: "/home",
+  //   component: Home,
+  // },
   {
     name:"product-detail",
     path:"/product-detail/:id",

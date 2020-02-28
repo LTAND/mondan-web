@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-container>
+    <!-- <el-container>
       <el-header>
         <Header></Header>
       </el-header>
@@ -8,25 +8,24 @@
         <router-view />
       </el-main>
       <el-footer>Footer</el-footer>
-    </el-container>
+    </el-container> -->
+    <router-view/>
   </div>
 </template>
 <script>
-import Header from "./components/Header.vue"
+// import Header from "./components/Header.vue"
 
 export default {
-  components:{
-    Header,
-  }
+  
 };
 </script>
 
 <style lang="scss" scoped>
-#app{
-  width: 1220px;
-  margin: auto;
-  el-container{
-    width: 100%;
-  }
-}
+// #app{
+//   width: 1220px;
+//   margin: auto;
+//   el-container{
+//     width: 100%;
+//   }
+// }
 </style>
