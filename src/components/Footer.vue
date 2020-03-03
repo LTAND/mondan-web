@@ -25,7 +25,7 @@
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .footer{
     background: #333;
     color: #ccc;

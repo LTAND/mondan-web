@@ -5,7 +5,9 @@
       <el-main>
         <router-view />
       </el-main>
-      <el-footer><Footer></Footer></el-footer>
+      <el-footer>
+        <Footer></Footer>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -22,11 +24,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// #app{
-//   width: 1220px;
-//   margin: auto;
-//   el-container{
-//     width: 100%;
-//   }
-// }
+#app{
+  margin: auto;
+  el-container{
+    width: 100%;
+    margin: auto;
+  }
+}
 </style>

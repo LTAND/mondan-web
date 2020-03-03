@@ -11,6 +11,7 @@ import { config } from "../utils/config.js"; // 配置密钥
 import Product from "../api/Product";
 import ProductList from "../components/Product-list"
 
+
 export default {
   data() {
     return {
@@ -22,7 +23,6 @@ export default {
     ProductList,
   },
   created() {
-    
     Product.findProductList(data => {
       this.productList = data
     });

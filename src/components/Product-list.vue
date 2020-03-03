@@ -2,7 +2,7 @@
   <div class="poduct">
     <ul>
       <router-link tag="li" class="product-item" :to="{ name:'product-detail', params:{id:item.id} }" v-for="item in productList" :key="item._id">
-        {{item.name}}{{item._id}}
+        {{item.name}}{{item}}
       </router-link>
     </ul>
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 import ProductApi from "../api/Product.js"
-import { config } from "../utils/config.js"; // 配置密钥
+import { config } from "../utils/config.js";  // 配置密钥
 
 export default {
   data(){
@@ -36,7 +36,6 @@ export default {
 .product-item{
   width: 450px;
   background: red;
-  height: 100px;
   margin-bottom: 10px;
 }
 </style>

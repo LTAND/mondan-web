@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="price-value clearfix">
-          <div class="price text-primary">¥{{product.now_price}}.00</div>
+          <div class="price text-primary">¥{{product.now_price | NumFormat(2)}}</div>
           <div class="stepper-radio">
             <button ref="btn-cut" disabled @click="cutCount()">
               <i class="iconfont iconminus"></i>
@@ -52,7 +52,7 @@
         </div>
         <div class="action">
           <button @click="addCart()" class="bt-button bt-primary">加入购物车</button>
-          <button class="bt-button bt-driving">立即购买</button>
+          <button class="bt-button bt-driving">去结算</button>
         </div>
       </div>
     </div>
@@ -82,7 +82,7 @@ export default {
       tabActiveIndex: 0,  // tab当前激活下表
       tabs:[
         { name:"购买须知", pane:"购买须知1说明"},
-        { name:"产品介绍", pane:""},
+        { name:"产品介绍", pane:"产品介绍2说明"},
         { name:"付款方式", pane:"付款方式3说明"},
         { name:"售后政策", pane:"售后政策4说明"}
       ],
@@ -182,14 +182,16 @@ export default {
 
 <style lang="scss" scoped>
 .product-detail {
+  width: 1440px;
   font-size: 0;
-  width: 100%;
   margin: 0 auto;
   .detail-top {
-    margin-top: 60px;
+    margin-top: 60px;  
+    display: flex;
+    justify-content:space-around;
+    align-items:center;
     .gallery {
       // 商品左半边
-      vertical-align: top;
       display: inline-block;
       .avatar {
         height: 507px;

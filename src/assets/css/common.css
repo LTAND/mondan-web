@@ -22,6 +22,10 @@ img{
   zoom: 1; 
 }
 
+.fl-right{
+  float:right;
+}
+
 .deal::-webkit-inner-spin-button,.deal::-webkit-outer-spin-button{
   -webkit-appearance: none;
 }

@@ -84,7 +84,6 @@ export default {
         { path: "/home", text: "首页" },
         { path: "/test", text: "商品" },
         { path: "/cart", text: "购物车"},
-        { path: "/about", text: "关于" }
       ]
     };
   }
