@@ -6,6 +6,7 @@ import Login from '../views/Login'
 import Test from "../views/Test"
 import Cart from "../views/Cart"
 import Order from "../views/Order"
+import User from "../views/User"
 import ProductDetail from "../views/Product-detail.vue"
 
 Vue.use(VueRouter)
@@ -13,21 +14,21 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: "/",
-    redirect:"/home"
+    redirect: "/home"
   },
   {
-    path:"/login",
-    component:Login
+    path: "/login",
+    component: Login
   },
   {
-    name:"home",
+    name: "home",
     path: "/home",
     component: Home,
   },
   {
-    name:"product-detail",
-    path:"/product-detail/:id",
-    component:ProductDetail
+    name: "product-detail",
+    path: "/product-detail/:id",
+    component: ProductDetail
   },
   {
     name: "cart",
@@ -43,6 +44,11 @@ const routes = [
     name:"test",
     path: "/test",
     component: Test
+  },
+  {
+    name: "user",
+    path: "/user/:id",
+    component: User
   }
 ]
 

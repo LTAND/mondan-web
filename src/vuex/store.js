@@ -13,7 +13,7 @@ const store = new Vuex.Store({
     // 设置用户状态数据
     setUserState(state,data){
       if (data) {
-        JSON.parse(data)
+        // JSON.parse(data)
         state.userInfo =  JSON.parse(data);
         state.isLogin = true;
       }else if(data == null){

@@ -22,17 +22,19 @@
         <div v-if="isLogin">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <img src="../assets/img/logo.png" />
-              <img src="" alt="">
-              <!-- {{this.$store.store.state.userInfo._username}} -->
+              <img :src="JSON.parse(this.$store.store.state.userInfo).avatar" />
               {{JSON.parse(this.$store.store.state.userInfo)._username}}
-              
               <i
                 class="el-icon-arrow-down el-icon--right"
               ></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>个人信息</el-dropdown-item>
+              <el-dropdown-item>
+                <!-- <router-link to="/user">个人信息</router-link> -->
+                <router-link
+                  :to="{name:'user', params:{id:JSON.parse(this.$store.store.state.userInfo).id}}"
+                >个人信息</router-link>
+              </el-dropdown-item>
               <el-dropdown-item divided>
                 <div @click="handleExit">退出登录</div>
               </el-dropdown-item>
@@ -49,16 +51,19 @@
 
 <script>
 export default {
-  // mounted(){
-  //   console.log(this.$store.state)
-  // },
-  computed:{
-    isLogin(){
-      if(localStorage.getItem("user")&&localStorage.getItem("ifx_baas_uid")){
-        this.$store.store.commit("setUserState", JSON.stringify(localStorage.getItem("user")))
-      }
-      else{
-        this.$store.store.commit("setUserState",null);
+  mounted() {},
+  computed: {
+    isLogin() {
+      if (
+        localStorage.getItem("user") &&
+        localStorage.getItem("ifx_baas_uid")
+      ) {
+        this.$store.store.commit(
+          "setUserState",
+          JSON.stringify(localStorage.getItem("user"))
+        );
+      } else {
+        this.$store.store.commit("setUserState", null);
       }
       return this.$store.store.getters.isLogin;
     }
@@ -68,9 +73,10 @@ export default {
       // localStorage.removeItem("user");
       localStorage.clear();
       // this.$router.push("/");
-      this.$store.store.dispatch("setUser",null);
+      this.$store.store.dispatch("setUser", null);
       this.$message.success("退出成功");
-      console.log(this.$store.store.state)
+      console.log(this.$store.store.state);
+      this.$router.push("/");
     },
     handleSelect(key, keyPath) {
       console.log(key);
@@ -83,7 +89,7 @@ export default {
       navList: [
         { path: "/home", text: "首页" },
         { path: "/test", text: "商品" },
-        { path: "/cart", text: "购物车"},
+        { path: "/cart", text: "购物车" }
       ]
     };
   }
@@ -93,6 +99,7 @@ export default {
 <style lang="scss" scoped>
 //超链接
 a {
+  text-decoration: none;
   &:link {
     color: black;
   }
@@ -103,17 +110,28 @@ a {
     color: skyblue;
   }
 }
-
+@media screen and (max-width: 768px) {
+  .nav {
+    width: 100%;
+    .nav-item {
+      display: none;
+    }
+  }
+}
+@media screen and (min-width: 768px) {
+  .nav {
+    width: 88%;
+  }
+}
 .header {
-  height: 80px;
-  line-height: 80px;
-  border-bottom: 1px solid #ddd;
+  line-height: 60px;
+  
   // box-shadow: 0 2px 2px #eee;
   //导航栏
   .nav {
-    height: 80px;
-    width: 1000px;
+    height: 60px;
     margin: 0 auto;
+    border-bottom: 1px solid #ddd;
     //logo部分
     .logo {
       a {
@@ -121,9 +139,10 @@ a {
         padding-right: 30px;
       }
       img {
-        margin-top: 13px;
+        margin-top: 9px;
         display: block;
-        height: 54px;
+        height: 42px;
+        width: auto;
       }
     }
     //导航菜单部分

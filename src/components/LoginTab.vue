@@ -49,9 +49,7 @@ export default {
     // background: url(@/assets/img/banner1.png) center 0;
     background: #ccc;
     height: 700px;
-    min-width: 1000px;
     .main{
-      width: 1000px;
       height: 100%;
       margin: 0 auto;
       position: relative;

@@ -27,6 +27,7 @@
 
 <style lang="scss" scoped>
   .footer{
+    margin-top: 10px;
     background: #333;
     color: #ccc;
     // min-width: 1000px;

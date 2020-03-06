@@ -14,7 +14,12 @@
       </div>
     </el-form>
     <!-- 登陆按钮 -->
-    <el-button type="primary" @click="handleSubmit('loginForm')" class="button">登陆</el-button>
+    <el-button
+      type="primary"
+      @click="handleSubmit('loginForm')"
+      class="button"
+      v-loading.fullscreen.lock="fullscreenLoading"
+    >登陆</el-button>
   </div>
 </template>
 <script>
@@ -25,6 +30,7 @@ export default {
   },
   data() {
     return {
+      fullscreenLoading: false,
       loginForm: {
         username: "",
         password: ""
@@ -43,22 +49,30 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //调用登陆接口
+          this.fullscreenLoading = true;
           Account.userLogin(this.loginForm, user => {
             console.log(user);
-            localStorage.setItem("user",JSON.stringify(user))
-            this.$store.store.dispatch("setUser",JSON.stringify(user))
-            console.log(this.$store.store.state)
+            localStorage.setItem("user", JSON.stringify(user));
+            this.$store.store.dispatch("setUser", JSON.stringify(user));
+            console.log(this.$store.store.state);
           });
-          this.$message.success("登录成功");
-          this.$router.push("/");
-          console.log(this.$store)
+          setTimeout(() => {
+            if (this.$store.store.state.isLogin) {
+              this.fullscreenLoading = false;
+              this.$message.success("登录成功");
+              this.$router.push("/");
+            } else {
+              this.fullscreenLoading = false;
+              this.$message.error("登录失败 用户名或密码错误");
+            }
+          }, 500);
         } else {
           console.log("error submit");
           return false;
         }
       });
     },
-    
+
     //微信登陆
     loginWithWechat() {}
   }

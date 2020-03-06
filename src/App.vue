@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header><Header></Header></el-header>
+      <el-header>
+        <Header></Header>
+      </el-header>
       <el-main>
         <router-view />
       </el-main>
@@ -12,11 +14,11 @@
   </div>
 </template>
 <script>
-import Header from "./components/Header.vue"
-import Footer from "./components/Footer"
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer";
 
 export default {
-  components:{
+  components: {
     Header,
     Footer
   }
@@ -24,11 +26,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#app{
+#app {
   margin: auto;
-  el-container{
+  el-container {
     width: 100%;
     margin: auto;
+  };
+  .el-main{
+    height: 100%;
+    padding: 0;
   }
+}
+@media screen and (max-width: 768px) {
+  
+}
+@media screen and (min-width: 768px) {
+
+}
+@media screen and (min-width: 1024px) {
+
+}
+@media screen and (min-width: 1200px) {
+
 }
 </style>
