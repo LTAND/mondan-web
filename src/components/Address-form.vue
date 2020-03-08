@@ -28,8 +28,11 @@
         <el-form-item label="设置默认地址">
           <el-switch v-model="addressForm.status"></el-switch>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">保存收货地址</el-button>
+        <el-form-item v-if ="formType=='save_form'">
+          <el-button type="primary" @click="onSubmit">保存地址</el-button>
+        </el-form-item>
+        <el-form-item v-if ="formType=='edit_form'">
+          <el-button type="primary" @click="onEdit">编辑完成</el-button>
         </el-form-item>
       </el-form>    
     </div>
@@ -38,31 +41,44 @@
 
 <script>
 import options from "../assets/area_format_user.json";
+import AddressApi from "../api/Address"
 
 export default {
   props:{
     title:{
       type:String,
       default:"默认标题"
+    },
+    userId:{
+      type:Number,
+      default: 0
+    },
+    addressForm:{
+      type:Object,
+      default:{}
+    },
+    formType:{
+      type:String,
+      default:"save_form" // save_form || edit_form
     }
   },
   data() {
     return {
       addressFlag: true,    // 显隐地址表单
       options,               // 存放城市数据
-      addressForm: {
-        status: 0,           // 地址状态，1默认地址
-        contact: "",         // 收货人姓名
-        phone: "",           // 收货人手机号
-        address: "",         // 详细地址
-        area: [],            // 存放城市默认值
+      // addressForm: {
+      //   status: 0,           // 地址状态，1默认地址
+      //   contact: "",         // 收货人姓名
+      //   phone: "",           // 收货人手机号
+      //   address: "",         // 详细地址
+      //   area: [],            // 存放城市默认值
 
-        zipcode: "",         // 邮政编码
-        country: "中国",     // 国家
-        province: "",        // 省份
-        city: "",            // 市
-        district: "",        // 区
-      },
+      //   zipcode: "",         // 邮政编码
+      //   country: "中国",     // 国家
+      //   province: "",        // 省份
+      //   city: "",            // 市
+      //   district: "",        // 区
+      // },
       addressFormRules:{
         contact: [
           // 收货人姓名
@@ -95,6 +111,7 @@ export default {
       this.addressFlag = true
     },
     close(){
+      this.$refs.addressForm.resetFields()
       this.addressFlag = false
     },
     handleChange(arr) {
@@ -110,21 +127,29 @@ export default {
         // this.addressForm.city = arr[1]
         // this.addressForm.district = arr[2]
 
+      }else{
+        // 用户选择区域
+        this.addressForm.province = ""
+        this.addressForm.city = ""
+        this.addressForm.district = ""
       }
-      this.addressForm.province = ""
-      this.addressForm.city = ""
-      this.addressForm.district = ""
     },
     onSubmit() {
       this.$refs.addressForm.validate((isVal, obj)=>{
         // 是否校验成功 和 未通过校验的字段
         if(isVal){
-          alert("表单填写成功")
+          AddressApi.addAddressRecord(this.userId, this.addressForm, data=>{
+            this.$emit("save",this.addressForm)
+            this.close()
+            alert("表单填写成功")
+          })
         }else{
           alert("表单填写失败")
-          console.log(obj)
         }
       })
+    },
+    onEdit(){
+      alert(111)
     }
   }
 };

@@ -33,7 +33,7 @@ function userLogin(opt, callback) {
 
 
 //获取用户信息
-function getUserInfo(callback) {
+function getUserInfo(callback){
   auth.getCurrentUser().then(user => {
     // user 为 currentUser 对象
     callback(user)

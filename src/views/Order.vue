@@ -6,17 +6,11 @@
         <span class="add-address" @click="addAddress()">新增收货地址</span>
         <h3 class="head">收件人信息</h3>
         <ul class="body">
-          <li class="address-row">
-            <p class="body-btn btn-active">张三</p>
-            <p class="body-info">广东省 上海市 普陀区 金沙江路 123456789 </p>
-            <p class="default" style="visibility: visible">默认地址</p>
-            <p class="body-info"><span class="address-edit">设为默认地址</span> <span class="address-edit">编辑</span> <span class="address-edit">删除</span></p>
-          </li>
-          <li class="address-row">
-            <p class="body-btn">张三</p>
-            <p class="body-info">广东省 南山区 普陀区 金沙江路 123456789 </p>
-            <p class="default">默认地址</p>
-            <p class="body-info"><span class="address-edit">设为默认地址</span> <span class="address-edit">编辑</span> <span class="address-edit">删除</span></p>
+          <li class="address-row" v-for="(item, index) in addressList" :key="item.id">
+            <p :class="{'btn-active': item.status==1?true:false}" class="body-btn">{{item.contact}}</p>
+            <p class="body-info">{{item.province}} {{item.city}} {{item.district}} {{item.address}} {{item.phone}}</p>
+            <p v-show="item.status == 1" class="default">默认地址</p>
+            <p class="body-info"><span v-show="item.status == 0" class="address-edit">设为默认地址</span> <span @click="editAddress(item)" class="address-edit">编辑</span> <span @click="deleteAddress(item.id,index)" class="address-edit">删除</span></p>
           </li>
         </ul>
       </div>
@@ -65,18 +59,29 @@
       <div class="btn-order clearfix"><button class="fl-right">提交订单</button></div>
     </div>
     <div class="address-form-wrapper">
-      <address-form ref="addressFormRef" :title="addressTitle"></address-form>
+      <address-form :formType="formType" :userId="userId" :title="addressTitle" :addressForm="addressFormData" @save="savaAddress" ref="addressFormRef"></address-form>
     </div>
   </div>
 </template>
 
 <script>
-import {cartStorage} from "../utils/cache.js"
+import {cartStorage, userStorage} from "../utils/cache.js"
 import AddressForm from "../components/Address-form"
+import AccountApi from "../api/Account.js";
+import AddressApi from "../api/Address"
 
 export default {
   components:{
     AddressForm,
+  },
+  created(){
+    AddressApi.findList(this.userId, res=>{
+      this.addressList = res.data.objects
+      console.log(res)
+    })
+    AccountApi.getUserInfo(data=>{
+      console.log('user: ', data);
+    })
   },
   computed:{ 
     allCount(){
@@ -96,12 +101,60 @@ export default {
   },
   data() {
     return {
-      addressTitle:"新增收货地址",
-      goods:cartStorage.getCache()  // 购物车
+      goods:cartStorage.getCache(),     // 购物车
+      addressList:[],                   // 用户所有地址
+      userId:(userStorage.getCache()).id, // 传入地址表单用户id
+      formType:"save_form",             // 地址表单类型 save_form || edit_form
+      addressTitle: "",                 // 传入地址表单标题
+      addressFormData: {                // 传入地址表单数据结构
+        status: 0,                       // 地址状态，1默认地址
+        contact: "",                     // 收货人姓名
+        phone: "",                       // 收货人手机号
+        address: "",                     // 详细地址
+        area: [],                        // 存放城市默认值
+        zipcode: "",                     // 邮政编码
+        country: "中国",                 // 国家
+        province: "",                    // 省份
+        city: "",                        // 市
+        district: "",                    // 区
+      },
     };
   },
   methods:{
     addAddress(){
+      // 用户最大三条地址可添加
+      if(this.addressList.length<3){
+        this.addressTitle = "新增收货地址"
+        this.formType = "save_form"
+        this.$refs.addressFormRef.show()
+      }else{
+        alert("每个用户最多三条地址")
+      }
+    },
+    /**
+     * 删除地址
+     * recordId 地址id
+     */
+    deleteAddress(recordId,index){
+      AddressApi.deleteRecord(recordId, res=>{
+        if(res.status == 204){
+          this.addressList.splice(index, 1)
+        }else{
+          alert("删除失败，稍后再试")
+        }
+      })
+    },
+    savaAddress(form){
+      // 保存完地址表单，通知重新请求
+      AddressApi.findList(this.userId, res=>{
+        this.addressList = res.data.objects
+      })
+    },
+    editAddress(record){
+      // TODO 编辑地址
+      this.addressTitle = "编辑收货地址";
+      this.formType = "edit_form"
+      this.addressFormData = JSON.parse(JSON.stringify(record))
       this.$refs.addressFormRef.show()
     }
   }
@@ -218,7 +271,6 @@ export default {
               font-size: 14px;
             }
             &.default{
-              visibility: hidden;
               padding:6px 8px;
               font-size: 14px;
               color: #fff;

@@ -8,28 +8,43 @@
 <script>
 import { showHErrorMsg } from "../utils/util.js"; // 根据错误码返回信息
 import { config } from "../utils/config.js"; // 配置密钥
-import Product from "../api/Product";
 import ProductList from "../components/Product-list"
+
+import Product from "../api/Product";
+import AddressApi from "../api/Address"
 
 
 export default {
   data() {
     return {
       user: null,
-      productList:[]
+      productList:[],
+      book:{
+        user_id: 1,     // 用户id
+        contact: "阿斯顿撒",          // 收货人姓名
+      }
     };
   },
   components:{
     ProductList,
   },
   created() {
+
+    // BookApi.addBook(this.book,data=>{
+    //   console.log("data:",data)
+    // })
+    // AddressApi.addAddressRecord(this.book,data=>{
+    //   console.log(data)
+    // })
     Product.findProductList(data => {
       this.productList = data
     });
+    // Product.addProductRecord(data => {
+    //   console.log('data: ', data);
+    // });
 
   },
   methods: {
-
     // 获取当前用户
     getCurrentUser() {
       this.$BaaS.auth

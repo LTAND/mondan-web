@@ -9,6 +9,7 @@ import Order from "../views/Order"
 import User from "../views/User"
 import ProductDetail from "../views/Product-detail.vue"
 
+import { userStorage} from "../utils/cache"
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,12 +34,18 @@ const routes = [
   {
     name: "cart",
     path: "/cart",
-    component: Cart
+    component: Cart,
+    meta:{
+      requiredLogin: true    // 需要登录的页面
+    }
   },
   {
     name:"order",
     path: "/order",
-    component: Order
+    component: Order,
+    meta:{
+      requiredLogin: true   // 需要登录的页面
+    }
   },
   {
     name:"test",
@@ -52,8 +59,30 @@ const routes = [
   }
 ]
 
-const router = new VueRouter({
+
+let router = new VueRouter({
   routes
 })
+
+router.beforeEach((to,from,next)=>{
+  let user = userStorage.getCache()
+  if(user){
+    // 已登录
+    next()
+  }else{
+    // 未登录
+    if(to.meta.requiredLogin){
+      // 拦截要求登录的页面，跳转登录页
+      next({path:"/login"})
+    }
+    next()
+  }
+  // if(!user && to.meta.requiredLogin){
+  //   // 拦截要求登录的页面，跳转登录页
+  //   next({path:"/login"})
+  // }
+  // next()
+})
+
 
 export default router

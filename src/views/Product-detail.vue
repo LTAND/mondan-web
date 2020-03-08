@@ -156,25 +156,30 @@ export default {
       // 加入购物车
       let list = cartStorage.getCache() 
       let index = list.findIndex(p => { return p.id == this.product.id })
+      let user = window.localStorage.getItem("user")
 
-      if (list.length && list[index]) {
-        let maxCount = this.product.count + list[index].count
-        // 添加数量达到限购
-        if( maxCount > list[index].limited_count ){
-          alert(`该商品在购物车已存在${list[index].count}台`);
-          return
-        }else{
-          console.log('maxCount: ', maxCount);
-          list[index].count = maxCount
+      if(user){
+        // 登录才可以拥有购物车
+        if (list.length && list[index]) {
+          // 存在一个购物车和购物商品
+          let maxCount = this.product.count + list[index].count
+          // 添加数量达到限购
+          if( maxCount > list[index].limited_count ){
+            alert(`该商品在购物车已存在${list[index].count}台`);
+          }else{
+            console.log('maxCount: ', maxCount);
+            list[index].count = maxCount
+            cartStorage.setCache(list)
+            alert("商品的数量增加",list[index].count)
+          }
+        } else {
+          list.push(this.product)
           cartStorage.setCache(list)
-          alert("商品的数量增加",list[index].count)
-          return
+          alert("添加到购物车里")
         }
-      } else {
-        list.push(this.product)
-        cartStorage.setCache(list)
-        alert("添加到购物车里")
       }
+      this.$router.push({ name:'cart'})
+
     }
   }
 };
