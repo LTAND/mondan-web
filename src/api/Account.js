@@ -41,7 +41,6 @@ function getUserInfo(callback){
     // HError
     if (err.code === 604) {
       console.log('用户未登录')
-      // this.$message.error("用户未登录")
     }
   })
 }

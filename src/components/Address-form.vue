@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      addressFlag: true,    // 显隐地址表单
+      addressFlag: false,    // 显隐地址表单
       options,               // 存放城市数据
       // addressForm: {
       //   status: 0,           // 地址状态，1默认地址

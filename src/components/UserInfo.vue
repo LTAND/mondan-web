@@ -91,7 +91,6 @@ export default {
     //获取用户信息
     Account.getUserInfo(callback => {
       this.form = callback;
-      console.log(this.form);
     });
   },
 

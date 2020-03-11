@@ -8,7 +8,9 @@
         <el-tab-pane label="个人信息">
           <UserInfo></UserInfo>
         </el-tab-pane>
-        <el-tab-pane label="地址管理"></el-tab-pane>
+        <el-tab-pane label="地址管理">
+          <UserAddress></UserAddress>
+        </el-tab-pane>
         <el-tab-pane label="我的订单">
           <OrderShow></OrderShow>
         </el-tab-pane>
@@ -20,11 +22,13 @@
 <script>
 import UserInfo from "../components/UserInfo.vue";
 import OrderShow from "../components/OrderShow.vue";
+import UserAddress from "../components/User-address.vue"
 export default {
   name: "userInfo",
   components: {
     UserInfo,
     OrderShow,
+    UserAddress
   }
 };
 </script>
