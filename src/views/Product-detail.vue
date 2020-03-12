@@ -187,7 +187,7 @@ export default {
 
 <style lang="scss" scoped>
 .product-detail {
-  width: 1440px;
+  // width: 1440px;
   font-size: 0;
   margin: 0 auto;
   .detail-top {

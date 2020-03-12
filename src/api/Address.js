@@ -5,52 +5,34 @@ BaaS.init(config.clientID);
 
 let AddressTable = new BaaS.TableObject('address')
 
-function addAddressRecord(userId, form, callback) {
-  //如果表单设置默认地址，将其他地址status设置为0
-  if (form.status !== 0) {
+async function addAddressRecord(userId, form, callback) {
+  try{
     let query = new BaaS.Query()
     query.compare('user_id', '=', userId)
-    //设置所有对象的status为0
-    AddressTable.setQuery(query).find().then(res => {
-      res.data.objects.forEach(item => {
-        let recordID = item.id // 数据行 id    
-        let address = AddressTable.getWithoutData(recordID)
-        address.set('status', 0)
-        address.update().then(res => {
-          // success
-          console.log(res)
-        }, err => {
-          // err
-          showHErrorMsg("更改所有地址的Status", err)
-        })
-      })
+    let { data: { objects: addressList } }  = await AddressTable.setQuery(query).find()  // 用户所有地址
+    if (addressList.length){
+      // 已存在一条以上的用户地址
+      if (form["status"] == true){
+        // 表单设置默认地址时, 重置所有默认地址状态为0
+        addressList.forEach(ele => {
+          if(ele.status == 1){
+            let record = AddressTable.getWithoutData(ele.id)
+            record.set({ status: 0 })
+            record.update()
+          }
+        });
+      }
+    }
+     
+    let record = AddressTable.create()
+    form["user_id"] = userId
+    record.set(form).save().then(res => {
+      callback(res)
     })
   }
-  //
-  let record = AddressTable.create()
-
-  // let item = {
-  //   user_id: 1,                   // 用户id
-  //   contact: "阿斯顿撒",          // 收货人姓名
-  //   phone: "123123123",          // 收货人手机号
-  //   zipcode: "123123",           // 邮政编码
-  //   country: "中国",             // 国家
-  //   province: "广东",            // 省份
-  //   city: "深圳",                    // 市
-  //   district: "南山区",              // 区
-  //   address: "啊实打实大师大师大师",  // 详细地址
-  //   status: 0,                      // 地址状态，1默认地址
-  //   priority: 0,                           
-  // }
-
-  form["user_id"] = userId
-  //设置该对象status为1
-  form.status = 1
-  record.set(form).save().then(res => {
-    callback(res)
-  }).catch(err => {
+  catch(err){
     showHErrorMsg("增加用户收货地址", err)
-  })
+  }
 }
 
 function findList(userId, callback) {
@@ -72,15 +54,31 @@ function deleteRecord(recordId, callback) {
   })
 }
 
-function updateRecord(recordId, params, callback) {
-  let record = AddressTable.getWithoutData(recordId)
-  record.set(params)
-
-  record.update().then(res => {
-    callback(res.data.objects)
-  }).catch(err => {
+async function updateRecord(userId, recordId, form, callback){
+  try{
+    let query = new BaaS.Query()
+    query.compare('user_id', '=', userId)
+    let { data: { objects: addressList } }  = await AddressTable.setQuery(query).find()  // 用户所有地址
+    if (form["status"] == true){
+      // 表单设置默认地址时, 重置用户所有地址的默认状态为0
+      addressList.forEach(ele => {
+        if(ele.status == 1){
+          let record = AddressTable.getWithoutData(ele.id)
+          record.set({ status: 0 })
+          record.update()
+        }
+      });
+    }
+    // 提交修改用户地址
+    let record = AddressTable.getWithoutData(recordId)
+    record.set(form)
+    record.update().then(res => {
+      callback(res.data)
+    })
+  }
+  catch(err){
     showHErrorMsg("修改用户地址", err)
-  })
+  }
 }
 
 

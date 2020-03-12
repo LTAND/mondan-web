@@ -4,7 +4,7 @@
     <el-table-column prop="now_price" label="单价" width="132">
       <template slot-scope="scope"><div class="">{{ scope.row.now_price | NumFormat(2)}} 元</div></template>
     </el-table-column>
-    <el-table-column label="数量" width="212">
+    <el-table-column label="数量" width="212px">
       <template slot-scope="scope"><el-input-number @change="changeCount(scope.row)" v-model="scope.row.count" :min="1" :max="scope.row.limited_count"/></template>
     </el-table-column>
     <el-table-column label="总价">

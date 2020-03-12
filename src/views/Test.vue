@@ -29,7 +29,6 @@ export default {
     ProductList,
   },
   created() {
-
     // BookApi.addBook(this.book,data=>{
     //   console.log("data:",data)
     // })

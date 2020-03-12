@@ -21,7 +21,7 @@ class Cache{
 
 // 购物车          
 const CART_KEY = "__cart__"
-export let cartStorage = new Cache(CART_KEY, "local", [])
+export let cartStorage = new Cache(CART_KEY, "sessionStorage", [])
 
 // 用户信息
 const USER_KEY = "user"

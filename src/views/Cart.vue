@@ -58,7 +58,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .page-cart{
-  width: 1440px;
+  width: 1200px;
   margin: 50px auto 0 auto;
 }
 </style>

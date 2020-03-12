@@ -38,11 +38,11 @@ body {
   margin: auto;
   el-container {
     width: 100%;
-    margin: auto;
-  }
-  .el-main {
-    height: 100%;
-    padding: 0;
+    margin: auto; 
+    el-main{
+      height: 100%;
+      padding: 0;
+    } 
   }
 }
 @media screen and (max-width: 768px) {

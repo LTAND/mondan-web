@@ -32,7 +32,7 @@
           <el-button type="primary" @click="onSubmit">保存地址</el-button>
         </el-form-item>
         <el-form-item v-if ="formType=='edit_form'">
-          <el-button type="primary" @click="onEdit">编辑完成</el-button>
+          <el-button type="primary" @click="onSubmit">编辑完成</el-button>
         </el-form-item>
       </el-form>    
     </div>
@@ -138,18 +138,40 @@ export default {
       this.$refs.addressForm.validate((isVal, obj)=>{
         // 是否校验成功 和 未通过校验的字段
         if(isVal){
-          AddressApi.addAddressRecord(this.userId, this.addressForm, data=>{
-            this.$emit("save",this.addressForm)
-            this.close()
-            alert("表单填写成功")
-          })
+          switch(this.formType){
+            case "save_form":
+              this._addAddressRecord()
+              break;
+            case "edit_form":
+              this._updateRecord();
+              break;
+            default:
+              console.log("组件参数formType未知", this.formType)
+          }
         }else{
           alert("表单填写失败")
         }
       })
     },
-    onEdit(){
-      alert(111)
+    _addAddressRecord(){
+      // 增加地址接口
+      AddressApi.addAddressRecord(this.userId, this.addressForm, data=>{
+        this.$emit("save",this.addressForm)
+        this.close()
+        alert("表单填写成功")
+      })
+    },
+    _updateRecord(){
+      // 修改地址接口
+      let recordId = this.addressForm._id
+      let form = JSON.parse(JSON.stringify(this.addressForm))
+      form.id && delete form["id"]
+      form.user_id && delete form["user_id"]
+      AddressApi.updateRecord(this.userId, recordId, form, data=>{
+        this.$emit("save",this.addressForm)
+        this.close()
+        alert("地址保存成功")
+      })
     }
   }
 };

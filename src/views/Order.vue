@@ -106,24 +106,27 @@ export default {
       userId:(userStorage.getCache()).id, // 传入地址表单用户id
       formType:"save_form",             // 地址表单类型 save_form || edit_form
       addressTitle: "",                 // 传入地址表单标题
-      addressFormData: {                // 传入地址表单数据结构
-        status: 0,                       // 地址状态，1默认地址
-        contact: "",                     // 收货人姓名
-        phone: "",                       // 收货人手机号
-        address: "",                     // 详细地址
-        area: [],                        // 存放城市默认值
-        zipcode: "",                     // 邮政编码
-        country: "中国",                 // 国家
-        province: "",                    // 省份
-        city: "",                        // 市
-        district: "",                    // 区
-      },
+      addressFormData: {}               // 传入地址表单数据结构
     };
   },
   methods:{
     addAddress(){
+      // 新增地址
       // 用户最大三条地址可添加
       if(this.addressList.length<3){
+        // 初始化
+        this.addressFormData = {           // 初始化表单数据结构
+          status: Boolean(1),              // 地址状态，1默认地址
+          contact: "",                     // 收货人姓名
+          phone: "",                       // 收货人手机号
+          address: "",                     // 详细地址
+          area: [],                        // 存放城市默认值
+          zipcode: "",                     // 邮政编码
+          country: "中国",                 // 国家
+          province: "",                    // 省份
+          city: "",                        // 市
+          district: "",                    // 区
+        }
         this.addressTitle = "新增收货地址"
         this.formType = "save_form"
         this.$refs.addressFormRef.show()
