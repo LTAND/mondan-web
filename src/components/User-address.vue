@@ -14,10 +14,14 @@
             <span>我的地址</span>
             <el-button style="float: right; padding: 3px 0" type="text" @click="addForm">新增</el-button>
           </div>
+
           <div class="address-item" v-for="(item,index) in addressList" :key="index">
             <el-card>
               <div slot="header">
-                <span>我的地址{{index+1}}</span>
+                <span>
+                  我的地址{{index+1}}
+                  <i style="color:crimson" v-show="item.status == 1">[默认]</i>
+                </span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="editAddress">编辑</el-button>
               </div>
               <div class="address-item-info">
@@ -26,10 +30,16 @@
                 <p>{{item.phone}}</p>
               </div>
               <div class="info-bottom">
+                <!-- 设置默认地址 -->
+                <el-button type="primary" @click="setDefault(item.id)">设为默认</el-button>
+                <!-- 删除地址 -->
                 <el-button
                   style="float: right; margin: 4px 2px"
                   @click="deleteAddress(item.id,index)"
-                >删除</el-button>
+                  type="danger"
+                  icon="el-icon-delete"
+                  circle
+                ></el-button>
               </div>
             </el-card>
           </div>
@@ -63,7 +73,7 @@ export default {
       addressTitle: "", // 传入地址表单标题
       addressFormData: {
         // 传入地址表单数据结构
-        status: 0, // 地址状态，1默认地址
+        status: "", // 地址状态，1默认地址
         contact: "", // 收货人姓名
         phone: "", // 收货人手机号
         address: "", // 详细地址
@@ -88,6 +98,7 @@ export default {
     AddressForm
   },
   methods: {
+    //增加地址
     addForm() {
       if (this.addressList.length < 3) {
         this.addressTitle = "新增收货地址";
@@ -97,7 +108,7 @@ export default {
         alert("每个用户最多三条地址");
       }
     },
-
+    //删除地址
     deleteAddress(recordId, index) {
       Address.deleteRecord(recordId, res => {
         if (res) {
@@ -111,20 +122,36 @@ export default {
         }
       });
     },
+
     savaAddress(form) {
       // 保存完地址表单，通知重新请求
-      Address.findList(this.userId, res => {
-        this.addressList = res.data.objects;
-        //显示有地址
-        this.isHave = false;
-      });
+      setTimeout(() => {
+        Address.findList(this.userId, res => {
+          this.addressList = res.data.objects;
+          //显示有地址
+          this.isHave = false;
+        });
+      }, 500);
     },
+
     editAddress(record) {
       // TODO 编辑地址
       this.addressTitle = "编辑收货地址";
       this.formType = "edit_form";
       this.addressFormData = JSON.parse(JSON.stringify(record));
       this.$refs.addressFormRef.show();
+    },
+
+    setDefault(itemId) {
+      Address.setDefaultAddress(this.userId, itemId);
+      // 通知重新请求
+      setTimeout(() => {
+        Address.findList(this.userId, res => {
+          this.addressList = res.data.objects;
+          //显示有地址
+          this.isHave = false;
+        });
+      }, 500);
     }
   }
 };
@@ -144,10 +171,25 @@ export default {
   transform: translate(-50%, -50%);
 }
 .address-wrap {
+  a {
+    color: red;
+    cursor: pointer;
+    &:hover {
+      color: skyblue;
+    }
+    &:active {
+      color: crimson;
+    }
+  }
   .address-item {
     @media screen and (max-width: 768px) {
       width: 96%;
       margin: 20px 0;
+      height: 200px;
+    }
+    @media screen and (max-width: 1200px) and(min-width: 768px) {
+      width: 30%;
+      margin: 20px 10px;
     }
     width: 31%;
     height: 400px;
@@ -155,6 +197,9 @@ export default {
     margin: 0 10px;
     .address-item-info {
       height: 250px;
+      @media screen and (max-width: 768px) {
+        height: 120px;
+      }
       p {
         font-size: 18px;
         margin: 20px 0;

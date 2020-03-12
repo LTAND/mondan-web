@@ -172,6 +172,7 @@ export default {
     };
   },
   methods: {
+    //修改个人信息提交
     infoSubmit() {
       alert("还不行");
     },
@@ -193,7 +194,6 @@ export default {
         }
       });
     }
-    //
   }
 };
 </script>
