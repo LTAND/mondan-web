@@ -54,6 +54,7 @@ function deleteRecord(recordId, callback) {
   })
 }
 
+// 编辑地址
 async function updateRecord(userId, recordId, form, callback){
   try{
     let query = new BaaS.Query()
@@ -81,37 +82,31 @@ async function updateRecord(userId, recordId, form, callback){
   }
 }
 
+// 设置默认地址
+async function setDefaultAddress(userId, recordId, callback){
+  try{
+    let query = new BaaS.Query()
+    query.compare('user_id', '=', userId)
+    let { data: { objects: addressList } }  = await AddressTable.setQuery(query).find()  // 用户所有地址
+    // 表单设置默认地址时, 重置用户所有地址的默认状态为0
+    addressList.forEach(ele => {
+      if(ele.status == 1){
+        let record = AddressTable.getWithoutData(ele.id)
+        record.set({ status: 0 })
+        record.update()
+      }
+    });
 
-
-function setDefaultAddress(userId, recordID) {
-  let query = new BaaS.Query()
-  query.compare('user_id', '=', userId)
-  //设置所有对象的status为0
-  AddressTable.setQuery(query).find().then(res => {
-    //
-    res.data.objects.forEach(item => {    
-      let address = AddressTable.getWithoutData(item.id)
-      address.set('status', 0)
-      address.update().then(() => {
-        // success
-      }, err => {
-        // err
-        showHErrorMsg("更改所有地址的Status", err)
-      })
+    // 设置地址默认状态
+    let record = AddressTable.getWithoutData(recordId)
+    record.set({ status: 1 })
+    record.update().then(res => {
+      callback(res)
     })
-  })
-  //设置此条对象地址status为1
-  setTimeout(() => {
-    let address = AddressTable.getWithoutData(recordID)
-    address.set('status', 1)
-    address.update().then(res => {
-      // success
-      alert("修改成功")
-    }, err => {
-      // err
-      showHErrorMsg("更改此条地址的Status", err)
-    })
-  }, 300)
+  }
+  catch(err){
+    showHErrorMsg("设置默认地址", err)
+  }
 }
 
 export default {

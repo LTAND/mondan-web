@@ -10,7 +10,7 @@
             <p :class="{'btn-active': item.status==1?true:false}" class="body-btn">{{item.contact}}</p>
             <p class="body-info">{{item.province}} {{item.city}} {{item.district}} {{item.address}} {{item.phone}}</p>
             <p v-show="item.status == 1" class="default">默认地址</p>
-            <p class="body-info"><span v-show="item.status == 0" class="address-edit">设为默认地址</span> <span @click="editAddress(item)" class="address-edit">编辑</span> <span @click="deleteAddress(item.id,index)" class="address-edit">删除</span></p>
+            <p class="body-info"><span @click="setDefaultAddress(item.id)" v-show="item.status == 0" class="address-edit">设为默认地址</span> <span @click="editAddress(item)" class="address-edit">编辑</span> <span @click="deleteAddress(item.id,index)" class="address-edit">删除</span></p>
           </li>
         </ul>
       </div>
@@ -53,10 +53,10 @@
       <div  class="make-sure clearfix">
         <div class="fl-right">
           <div class="desc clearfix">应付金额：<p class="money">￥{{total | NumFormat(2)}}</p></div>
-          <div class="desc" style="color:#ada5a5">寄送至：广东省上海市普陀区金沙江路  收货人：张三 123456789</div>
+          <div class="desc" style="color:#ada5a5">{{getDefaultAddress}}</div>
         </div>
       </div>
-      <div class="btn-order clearfix"><button class="fl-right">提交订单</button></div>
+      <div class="btn-order clearfix"><button class="fl-right" @click="onOrder()">提交订单</button></div>
     </div>
     <div class="address-form-wrapper">
       <address-form :formType="formType" :userId="userId" :title="addressTitle" :addressForm="addressFormData" @save="savaAddress" ref="addressFormRef"></address-form>
@@ -67,7 +67,6 @@
 <script>
 import {cartStorage, userStorage} from "../utils/cache.js"
 import AddressForm from "../components/Address-form"
-import AccountApi from "../api/Account.js";
 import AddressApi from "../api/Address"
 
 export default {
@@ -75,16 +74,23 @@ export default {
     AddressForm,
   },
   created(){
+    // 请求用户所有地址
     AddressApi.findList(this.userId, res=>{
       this.addressList = res.data.objects
-      console.log(res)
-    })
-    AccountApi.getUserInfo(data=>{
-      console.log('user: ', data);
     })
   },
-  computed:{ 
+  computed:{
+    getDefaultAddress(){
+      // 订单默认地址
+      let defAddress= this.addressList.find(item=>{return item.status == 1})
+      if(!defAddress){
+        return "请添加收货地址，并设置为默认地址"
+      }
+      let {province,city,district,address,contact,phone} = defAddress
+      return `寄送至：${province} ${city} ${district} ${address} 收货人：${contact} ${phone}`
+    },
     allCount(){
+      // 订单商品数量
       let count =0
       this.goods.forEach(ele => {
         count += ele.count
@@ -92,6 +98,7 @@ export default {
      return count
     },
     total(){
+      // 订单总价
       let total = 0
       this.goods.forEach(ele => {
         total += ele.now_price * ele.count
@@ -110,6 +117,17 @@ export default {
     };
   },
   methods:{
+    // 点击设置默认地址
+    setDefaultAddress(recordId){
+      AddressApi.setDefaultAddress(this.userId, recordId, res=>{
+        if(res.status==200){
+          // 请求用户所有地址
+          AddressApi.findList(this.userId, res=>{
+            this.addressList = res.data.objects
+          })
+        }
+      })
+    },
     addAddress(){
       // 新增地址
       // 用户最大三条地址可添加
@@ -159,6 +177,9 @@ export default {
       this.formType = "edit_form"
       this.addressFormData = JSON.parse(JSON.stringify(record))
       this.$refs.addressFormRef.show()
+    },
+    onOrder(){
+      
     }
   }
 };

@@ -136,7 +136,7 @@ export default {
     },
     onSubmit() {
       this.$refs.addressForm.validate((isVal, obj)=>{
-        // 是否校验成功 和 未通过校验的字段
+        // isVal是否校验成功 和 obj未通过校验的字段
         if(isVal){
           switch(this.formType){
             case "save_form":
