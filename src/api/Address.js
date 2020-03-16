@@ -101,7 +101,7 @@ async function setDefaultAddress(userId, recordId, callback){
     let record = AddressTable.getWithoutData(recordId)
     record.set({ status: 1 })
     record.update().then(res => {
-      callback(res)
+      callback(res);
     })
   }
   catch(err){

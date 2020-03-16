@@ -100,7 +100,22 @@ export default {
   methods: {
     //增加地址
     addForm() {
+      // 用户最大三条地址可添加
       if (this.addressList.length < 3) {
+        // 初始化
+        this.addressFormData = {
+          // 初始化表单数据结构
+          status: Boolean(1), // 地址状态，1默认地址
+          contact: "", // 收货人姓名
+          phone: "", // 收货人手机号
+          address: "", // 详细地址
+          area: [], // 存放城市默认值
+          zipcode: "", // 邮政编码
+          country: "中国", // 国家
+          province: "", // 省份
+          city: "", // 市
+          district: "" // 区
+        };
         this.addressTitle = "新增收货地址";
         this.formType = "save_form";
         this.$refs.addressFormRef.show();
@@ -142,16 +157,17 @@ export default {
       this.$refs.addressFormRef.show();
     },
 
+    //设置默认地址
     setDefault(itemId) {
-      Address.setDefaultAddress(this.userId, itemId);
-      // 通知重新请求
-      setTimeout(() => {
-        Address.findList(this.userId, res => {
-          this.addressList = res.data.objects;
-          //显示有地址
-          this.isHave = false;
-        });
-      }, 500);
+      Address.setDefaultAddress(this.userId, itemId, res=>{
+        if(res.status==200){
+          // 请求用户所有地址
+          Address.findList(this.userId, res=>{
+            this.addressList = res.data.objects
+            this.isHave = false
+          })
+        }
+      })
     }
   }
 };

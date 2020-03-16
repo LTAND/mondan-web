@@ -1,11 +1,24 @@
 <template>
   <div class="qaa">
-    <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="item in qa" :key="item.index" class="qaa-item">
-        <h4>{{ item.q }}</h4>
-        <h4>{{ item.a }}</h4>
-      </el-carousel-item>
-    </el-carousel>
+    <div class="qa-title">
+      <p>常见问题</p>
+    </div>
+
+    <div class="qa-item">
+      <ul>
+        <li v-for="(item,index) in qa" :key="index">
+          <el-popover
+            placement="right-start"
+            :title="item.q"
+            width="200"
+            trigger="hover"
+            :content="item.a"
+          >
+            <el-button slot="reference" type="text">{{item.q}}</el-button>
+          </el-popover>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -24,9 +37,14 @@ export default {
             "家庭挖矿的优势在于省去了托管费的成本，家庭带宽多半时间是闲置的，即便使用也不会占满所有的带宽。使用闲置带宽去挖矿，是一件非常划算的事情，而且这也更加符合Filecoin去中心化的宗旨。"
         },
         {
-          q: "家庭挖矿的收益将如何计算，该如何提高挖矿效率？",
+          q: "家庭挖矿的收益将如何计算",
           a:
-            "MODOPOOL将计算所有接入矿机的工作量（即提交的封装空间大小），按照比例发放。MODAN官方建议家庭需要有千兆网络。"
+            "MODOPOOL将计算所有接入矿机的工作量（即提交的封装空间大小），按照比例发放。"
+        },
+        {
+          q: "如何提高挖矿效率？",
+          a:
+            "MODAN官方建议家庭需要有千兆网络。"
         },
         {
           q: "为何MODAN的形式是个路由器？",
@@ -50,9 +68,21 @@ export default {
 </script>
 <style lang="scss" scoped>
 .qaa {
-  margin-top: 30px;
-  .qaa-item {
-    background-color: #eee;
+  padding: 10px 0;
+  background: #eee;
+  font-size: 16px;
+  .qa-title {
+    text-align: center;
+    line-height: 36px;
+    display: flex;
+    justify-content: center;
+    p {
+      width: 88%;
+      border-bottom: 1px solid #333;
+    }
+  }
+  .qa-item {
+    margin: 0 30px;
   }
 }
 </style>
