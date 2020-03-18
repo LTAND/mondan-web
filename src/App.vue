@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 //清除element横向滚动条
 body {
   .el-scrollbar__wrap {

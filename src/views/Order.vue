@@ -179,7 +179,22 @@ export default {
       this.$refs.addressFormRef.show()
     },
     onOrder(){
-      
+      let params = {
+        gatewayType: 'weixin_tenpay_native',
+        totalCost: 0.1,
+        merchandiseDescription: '深蓝色秋裤'
+      }
+
+      this.$BaaS.payment.payWithWechat(params).then(res => {
+        /**
+         * success.
+         * res.data.code_url 用来生成二维码
+         * res.data.trade_no 用来查询支付状态
+         */
+      }, err => {
+        // 未完成用户授权或发生网络异常等
+        console.log(err)
+      })      
     }
   }
 };

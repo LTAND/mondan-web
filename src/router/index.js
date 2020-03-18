@@ -7,6 +7,7 @@ import Test from "../views/Test"
 import Cart from "../views/Cart"
 import Order from "../views/Order"
 import User from "../views/User"
+import Pay from "../views/Pay"
 import ProductDetail from "../views/Product-detail.vue"
 
 import { userStorage} from "../utils/cache"
@@ -56,6 +57,11 @@ const routes = [
     name: "user",
     path: "/user/:id",
     component: User
+  },
+  {
+    name:"Pay",
+    path:"/pay",
+    component: Pay
   }
 ]
 

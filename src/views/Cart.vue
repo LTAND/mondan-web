@@ -5,7 +5,7 @@
         v-if="cart.length" :span="24" class="m-cart">
         <cart-list @select="changeItemCount" @select-delete="handleDelete" :cart-list-data="cart"/>
         <p> 应付金额：<em class="money">￥{{total | NumFormat(2)}}</em> </p>
-        <el-button @click="goOrder()" type="primary">提交订单</el-button>
+        <el-button @click="goOrder()" type="primary">结算</el-button>
       </el-col>
       <el-col v-else class="empty">购物车为空</el-col>
     </el-row>

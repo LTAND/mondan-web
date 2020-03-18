@@ -89,7 +89,8 @@ export default {
       navList: [
         { path: "/home", text: "首页" },
         { path: "/test", text: "商品" },
-        { path: "/cart", text: "购物车" }
+        { path: "/cart", text: "购物车" },
+        { path: "/pay", text: "pay test" },
       ]
     };
   }
