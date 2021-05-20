@@ -1,7 +1,7 @@
 // 本地储存的封装
 class Cache{
   constructor(key, type = "local", def = ""){
-    this.Storage = type == "local"|"localStorage" ? window.localStorage : window.sessionStorage; // 选择不同储存方式
+    this.Storage = type == "local"||"localStorage" ? window.localStorage : window.sessionStorage; // 选择不同储存方式
     this.key = key
     this.def = def;
   }
